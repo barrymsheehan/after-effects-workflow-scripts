@@ -1,10 +1,12 @@
 # After Effects Workflow Scripts
 
-A variety of Adobe After Effects workflow scripts. The scripts are designed to
-be used with keyboard shortcuts (examples of how to do this are found in the
-*Adobe After Effects [ver] Win en_US Shortcuts.txt* file). Some of the scripts
-are geared towards working with stock video, which involves working with many
-near-identical Comps (Compositions) containing short, discrete video clips.
+A variety of Adobe After Effects workflow scripts.  Most of these scripts should
+be useful to anyone looking to speed up their AE workflow. However some are
+geared towards working with stock video, which involves working with many
+similar Comps (Compositions) containing short, discrete video clips. The scripts
+can be used as-is, but are designed to be used with keyboard shortcuts (examples
+of how to do this are found in the
+*Adobe After Effects [ver] Win en_US Shortcuts.txt* file).
 
 ## Getting started
 
@@ -22,8 +24,8 @@ scripts more readily available through the **File > Scripts** menu. By default
 this folder can be found here.:
 
 ```
-* Windows: Program Files\Adobe\Adobe After Effects <version>\Support Files
-* Mac OS: Applications/Adobe After Effects <version>
+> Windows: Program Files\Adobe\Adobe After Effects <version>\Support Files
+> Mac OS: Applications/Adobe After Effects <version>
 ```
 
 ## Usage
@@ -38,7 +40,7 @@ Around the call to the function within each script is an Undo Group. This allows
 all actions of the script to be undone with a single *Ctrl + Z* or *Undo*
 command. The function call and Undo Group look like this.:
 
-```
+```javascript
 app.beginUndoGroup('Encapsulate the function call to allow single Undo');
   myFunction();
 app.endUndoGroup();
@@ -55,7 +57,7 @@ This function serves as a template to perform the above action where
 **PROPERTY** is the property of each Comp that you want to change and **VALUE**
 is the value to which it should be changed.
 
-```
+```javascript
 function globalCompPropertyFunction() {
   for(var i = 1; i <= app.project.numItems; i++) {
     if(app.project.item(i) instanceof CompItem) {
@@ -76,7 +78,7 @@ This function changes the *frameRate* property of every Comp in a Project to
 they've all got the wrong frame rate for your output or they've got different
 frame rates and need to be normalised.
 
-```
+```javascript
 function globalCompFramerate24() {
 	for(var i = 1; i <= app.project.numItems; i++) {
 		if(app.project.item(i) instanceof CompItem) {
@@ -97,7 +99,7 @@ hardware-intensive and smoother.
 This function changes the resolution factor of all Comps to one quarter, but
 any resolution can be selected.
 
-```
+```javascript
 function globalResFactorQuarter() {
   for(var i = 1; i <= app.project.numItems; i++) {
     if(app.project.item(i) instanceof CompItem) {
@@ -118,7 +120,7 @@ This script serves as a template for scripts that create new Adjustment Layers.
 
 First, a new Layer is created in the current Comp.
 
-```
+```javascript
 var currentComp = app.project.activeItem,
 selectedCompLayers = currentComp.selectedLayers,
 newAdjLayer = currentComp.layers.addSolid([0, 0, 0], 'New Adjustment Layer', currentComp.width, currentComp.height, 1);
@@ -129,7 +131,7 @@ the start of the timeline. On the next line the Layer is set to be an Adjustment
 Layer. Finally an effect (**New Effect**) is added to the *Effects* property of
 the Layer.
 
-```
+```javascript
 newAdjLayer.startTime = 0;
 newAdjLayer.adjustmentLayer = true;
 newAdjLayer.property('Effects').addProperty('NEW EFFECT');
@@ -138,7 +140,7 @@ newAdjLayer.property('Effects').addProperty('NEW EFFECT');
 Finally, the Layer is placed above the currently selected Layer(s) or, if no
 Layers are selected, the top of the Layer stack.
 
-```
+```javascript
 if(selectedCompLayers.length > 0) {
   newAdjLayer.moveBefore(selectedCompLayers[selectedCompLayers.length - 1]);
 }
@@ -151,7 +153,7 @@ of footage.
 
 #### createBandingSolutionLayer.jsx
 
-```
+```javascript
 function createBandingSolutionLayer() {
   // Create new Solid 'newBandingSolutionLayer'
   var currentComp = app.project.activeItem,
